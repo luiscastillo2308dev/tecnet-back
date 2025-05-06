@@ -1,6 +1,6 @@
-<p align="center">
+<!-- <p align="center">
   <img src="https://via.placeholder.com/200x200.png?text=TecNet+API" width="200" alt="TecNet Logo" />
-</p>
+</p> -->
 
 <h1 align="center">TecNet Backend API</h1>
 
