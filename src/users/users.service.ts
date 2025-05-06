@@ -17,6 +17,7 @@ import {
   generateActivationToken,
   generateResetPasswordToken,
 } from 'src/utils/auth-utils'; // Assuming these utils exist
+import { ConfigService } from '@nestjs/config';
 // Import email templates - ensure these functions return HTML strings
 import { activationUserEmailTemplate } from 'src/mail/templates/activation-user-email';
 import { resetPasswordEmailTemplate } from 'src/mail/templates/reset-password-email';
@@ -28,6 +29,7 @@ export class UsersService {
   constructor(
     private prismaService: PrismaService,
     private mailService: MailService, // Inject MailService
+    private configService: ConfigService,
   ) {}
 
   /**
@@ -63,7 +65,7 @@ export class UsersService {
       });
 
       // Send activation email asynchronously (don't block the response)
-      const confirmationLink = `${process.env.FRONTEND_URL}/users/activate/${activationToken}`; // Use correct frontend route
+      const confirmationLink = `${this.configService.get<string>('FRONTEND_URL')}/users/activate/${activationToken}`; // Use correct frontend route
       this.mailService
         .sendEmail(
           user.email,
@@ -304,7 +306,7 @@ export class UsersService {
       });
 
       // Send reset email asynchronously
-      const resetLink = `${process.env.FRONTEND_URL}/auth/update-password/?token=${resetToken}`; // Use correct frontend route
+      const resetLink = `${this.configService.get<string>('FRONTEND_URL')}/auth/update-password/?token=${resetToken}`; // Use correct frontend route
       this.mailService
         .sendEmail(
           user.email,
@@ -487,7 +489,7 @@ export class UsersService {
     });
 
     // Send activation email asynchronously (don't block the response)
-    const confirmationLink = `${process.env.FRONTEND_URL}/users/activate/${activationToken}`; // Use correct frontend route
+    const confirmationLink = `${this.configService.get<string>('FRONTEND_URL')}/users/activate/${activationToken}`; // Use correct frontend route
     this.mailService
       .sendEmail(
         user.email,
