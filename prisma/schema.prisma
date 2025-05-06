@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id    String     @id @default(uuid())
+  name      String    @unique
+  description  String?
+  users  User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id    String     @id @default(uuid())
+  email          String          @unique
+  password       String
+  name           String
+  lastName       String
+  address        String?
+  phone          String?
+  isActive  Boolean   @default(false) // para manejar
+  activationToken String? @unique
+  activationTokenExpires DateTime?
+  resetToken String?  @unique// la activacion del usuario 
+  resetTokenExpiry DateTime?   // por email
+  refreshToken String? @unique
+  refreshTokenExpires DateTime?
+  roleId  String
+  role    Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Category {
+  id    String     @id @default(uuid())
+  name      String    @unique
+  description  String?
+  projects  Project[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ProjectStatus {
+  INIT         // 5%
+  IN_PROGRESS  // 25%
+  TO_COMPLETED // 75%
+  COMPLETED    // 100%
+}
+
+model Project {
+  id    String     @id @default(uuid())
+  name  String @unique
+  description  String?
+  technologies String[]
+  weeksWorked Int
+  // coverImage String
+  price Decimal @default(0.0) @db.Decimal(10, 2)
+  images String[]
+  video  String
+  status    ProjectStatus @default(INIT)
+  completionDate DateTime? // Optional completion date
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Define the enum for the possible statuses
+enum QuoteStatus {
+  PENDING      // Request received, not yet reviewed or worked on
+  IN_PROGRESS  // Request is being reviewed or worked on
+  COMPLETED    // Quote sent or request finalized/closed
+}
+
+// Update the QuoteRequest model to include the status field
+model QuoteRequest {
+  id        String      @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  phone   String
+  requirementsFile  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Add the status field using the QuoteStatus enum
+  // Set a default value, typically PENDING for new requests
+  status    QuoteStatus @default(PENDING)
+
+  // Map to the database table name (good practice)
+  @@map("quote_requests")
+}
