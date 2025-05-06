@@ -238,7 +238,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Project Repository: [https://github.com/luiscastillo23/tecnet-backend](https://github.com/luiscastillo23/tecnet-backend)
 
-Project Website: [https://tecnet.com](https://tecnet.com)
+Project Website: Soon
+
+Email contact: [tecnet.message@gmail.com](mailto:tecnet.message@gmail.com)
 
 ---
 
