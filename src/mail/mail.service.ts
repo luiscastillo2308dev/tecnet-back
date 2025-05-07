@@ -31,7 +31,7 @@ export class MailService {
   ): Promise<nodemailer.SentMessageInfo> {
     try {
       const info = await this.transporter.sendMail({
-        from: `"My App" <${this.configService.get<string>('MAIL_USER')}>`,
+        from: `"TecNet" <${this.configService.get<string>('MAIL_USER')}>`,
         to,
         subject,
         html,
