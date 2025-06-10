@@ -199,7 +199,7 @@ export class UsersService {
    */
   async activateUser(token: string): Promise<User> {
     const user = await this.findByActivationToken(token);
-
+    console.log('User found by activation token - back service:', user);
     if (!user) {
       throw new UnauthorizedException('Invalid activation token.');
     }
@@ -222,6 +222,7 @@ export class UsersService {
         activationTokenExpires: null,
       },
     });
+    console.log('Updated user after activation - back service:', updatedUser);
 
     // Exclude password
     const { password, ...result } = updatedUser;
