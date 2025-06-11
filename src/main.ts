@@ -26,15 +26,16 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   // --- CORS ---
-  // Enable Cross-Origin Resource Sharing with proper configuration
-  app.enableCors({
-    origin:
-      configService.get<string>('FRONTEND_URL') || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    maxAge: 3600, // Cache preflight requests for 1 hour
-  });
+  // Enable Cross-Origin Resource Sharing
+  // For production, configure specific origins, methods, and headers
+  // Example:
+  // app.enableCors({
+  //   origin: configService.get<string>('CLIENT_URL') || 'http://localhost:3000', // Allow frontend origin
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   credentials: true,
+  // });
+  // For simplicity during development or if open access is intended:
+  app.enableCors();
 
   // --- Validation ---
   // Enable global validation pipe to automatically transform and validate incoming data based on DTOs
