@@ -36,6 +36,7 @@ export class RolesController {
    * Creates a new role.
    * Applies validation pipe to the incoming body.
    */
+  @Public()
   @Post()
   /* @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // Validate DTO  */
   @ApiOperation({ summary: 'Create a new role' }) // Optional: Swagger description
